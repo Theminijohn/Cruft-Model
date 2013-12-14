@@ -1,4 +1,6 @@
 Cruft::Application.routes.draw do
+  resources :logs
+
   devise_for :users
   get "pages/home"
 
