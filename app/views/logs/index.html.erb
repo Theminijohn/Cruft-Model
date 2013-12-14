@@ -4,7 +4,7 @@
   <thead>
     <tr>
       <th>Description</th>
-      <th></th>
+      <th>User</th>
       <th></th>
       <th></th>
     </tr>
@@ -14,9 +14,12 @@
     <% @logs.each do |log| %>
       <tr>
         <td><%= log.description %></td>
+        <td><%= log.user.email if log.user %></td>
         <td><%= link_to 'Show', log %></td>
-        <td><%= link_to 'Edit', edit_log_path(log) %></td>
-        <td><%= link_to 'Destroy', log, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if log.user == current_user %>
+          <td><%= link_to 'Edit', edit_log_path(log) %></td>
+          <td><%= link_to 'Destroy', log, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

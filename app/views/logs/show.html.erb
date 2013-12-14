@@ -5,5 +5,7 @@
   <%= @log.description %>
 </p>
 
-<%= link_to 'Edit', edit_log_path(@log) %> |
-<%= link_to 'Back', logs_path %>
+<% if @log.user == current_user %>
+  <%= link_to 'Edit', edit_log_path(@log) %> |
+  <%= link_to 'Back', logs_path %>
+<% end %>

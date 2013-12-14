@@ -1,4 +1,6 @@
 class LogsController < ApplicationController
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :correct_user, only: [:edit, :update, :destroy]
   before_action :set_log, only: [:show, :edit, :update, :destroy]
 
   # GET /logs
@@ -14,7 +16,7 @@ class LogsController < ApplicationController
 
   # GET /logs/new
   def new
-    @log = Log.new
+    @log = current_user.logs.build
   end
 
   # GET /logs/1/edit
@@ -24,7 +26,7 @@ class LogsController < ApplicationController
   # POST /logs
   # POST /logs.json
   def create
-    @log = Log.new(log_params)
+    @log = current_user.logs.build(log_params)
 
     respond_to do |format|
       if @log.save
@@ -45,7 +47,7 @@ class LogsController < ApplicationController
         format.html { redirect_to @log, notice: 'Log was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+        format.html { render acstion: 'edit' }
         format.json { render json: @log.errors, status: :unprocessable_entity }
       end
     end
@@ -66,6 +68,11 @@ class LogsController < ApplicationController
     def set_log
       @log = Log.find(params[:id])
     end
+
+  def correct_user
+    @log = current_user.logs.find_by(id: params[:id])
+    redirect_to logs_path, notice: "Not authorized to edit this Log" if @log.nil?
+  end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def log_params
