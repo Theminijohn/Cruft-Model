@@ -3,8 +3,10 @@
 <table>
   <thead>
     <tr>
+      <th>Image</th>
       <th>Description</th>
       <th>User</th>
+      <th></th>
       <th></th>
       <th></th>
     </tr>
@@ -13,6 +15,7 @@
   <tbody>
     <% @logs.each do |log| %>
       <tr>
+        <td><%= image_tag log.image.url(:thumb) %></td>
         <td><%= log.description %></td>
         <td><%= log.user.email if log.user %></td>
         <td><%= link_to 'Show', log %></td>
@@ -27,4 +30,6 @@
 
 <br>
 
-<%= link_to 'New Log', new_log_path %>
+<% if user_signed_in? %>
+  <%= link_to 'New Log', new_log_path %>
+<% end %>
